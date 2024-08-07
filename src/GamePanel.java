@@ -13,8 +13,8 @@ import java.awt.Font;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    static final int WIDTH = 800;
+    static final int HEIGHT = 600;
     private static final int PANEL_PASS_COUNT = 5; // パネル通過のカウントをここで定義
     private static final int PANEL_FALL_SPEED = 2; // パネルの降下速度
     private static final long PANEL_COOLDOWN = 1000; // パネル取得後のクールダウンタイム（ミリ秒）
@@ -113,6 +113,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         checkCollisions();
 
         if (panelPasses >= PANEL_PASS_COUNT) {
+            soldier.resetXMinMax();
             bossFight = true;
             panels.clear();
             obstacles.clear();
@@ -142,7 +143,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         if (currentTime - lastPanelCollectedTime < PANEL_COOLDOWN) {
             return; // クールダウンタイム中はパネルを収集しない
         }
-
         int soldierSize = 20;
         int padding = 5; // 当たり判定のパディングを追加
 
@@ -154,13 +154,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 soldier.getY() + soldierSize - padding > panel.getY()) {
                 applyOperation(panel.getOperation());
                 panels.remove(i);
-                // 取得しなかったもう一つのパネルを削除
-                if (!panels.isEmpty()) {
-                    panels.remove(0);
-                }
                 panelPasses++;
                 lastPanelCollectedTime = currentTime; // パネルを収集した時間を更新
+                soldier.setXMinMax(panel.getX(),panel.getX() + panel.getWidth());
                 break; // 1フレームで1つのパネルのみ収集
+            } else {
+                soldier.resetXMinMax();
             }
         }
 
