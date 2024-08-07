@@ -91,7 +91,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 } else {
                     gameOver = true;
                     System.out.println("You lose!");
-                    resetToStartScreen();
                 }
             }
             return;
@@ -171,7 +170,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 soldier.getY() + soldierSize > obstacle.getY()) {
                 gameOver = true;
                 System.out.println("Hit an obstacle!");
-                resetToStartScreen();
                 return;
             }
         }
@@ -190,7 +188,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             } else {
                 gameOver = true;
                 System.out.println("You lose!");
-                resetToStartScreen();
             }
         }
     }
@@ -245,7 +242,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             g.setFont(new Font("Arial", Font.BOLD, 36));
             g.drawString("Game Over", WIDTH / 2 - 100, HEIGHT / 2);
             g.setFont(new Font("Arial", Font.PLAIN, 24));
-            g.drawString("Press R to Retry", WIDTH / 2 - 100, HEIGHT / 2 + 50);
+            g.drawString("Press T to Return to Title", WIDTH / 2 - 130, HEIGHT / 2 + 50); // タイトルへ戻るメッセージ
             return;
         }
 
@@ -287,8 +284,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             if (soldier.getX() < WIDTH - 20) {
                 soldier.moveRight();
             }
-        } else if (key == KeyEvent.VK_R && gameOver) {
-            resetGame();
+        } else if (key == KeyEvent.VK_T && gameOver) {
+            startScreen = true; // タイトルに戻る
+            gameOver = false;
         } else if (!gameOver && gameWon) {
             gameWon = false;
         } else if (startScreen) {
@@ -311,7 +309,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             startScreen = false;
             resetGame();
         } else if (gameOver && e.getButton() == MouseEvent.BUTTON1) {
-            resetGame();
+            startScreen = true; // タイトルに戻る
+            gameOver = false;
         } else if (!gameOver && gameWon) {
             gameWon = false;
         } else {
