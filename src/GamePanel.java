@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private long lastPanelCollectedTime; // 最後にパネルを取得した時間
 
     private double sleepAddTime;
-    private int fps=60;
+    private int fps = 60;
 
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -64,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private void startGame() {
         System.out.println("START");
         running = true;
-        if(first){
+        if (first) {
             thread = new Thread(this);
             thread.start();
             first = false;
@@ -78,9 +78,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             updateGame();
             //repaint();
             try {
-                long res = (long)nextTime - System.currentTimeMillis();
-                if ( res < 0 ) res = 0;
-				Thread.sleep(res);
+                long res = (long) nextTime - System.currentTimeMillis();
+                if (res < 0) res = 0;
+                Thread.sleep(res);
                 //Thread.sleep(16); // 約60FPS
                 repaint();
                 nextTime += sleepAddTime;
@@ -136,13 +136,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         }
     }
 
-    public void setFps(int fps){
-		if ( fps < 10 || fps > 60 ) {
-			throw new IllegalArgumentException("fpsの設定は10～60の間で指定してください。");
-		}
-		this.fps = fps;
-		sleepAddTime = 1000.0 / fps;
-	}
+    public void setFps(int fps) {
+        if (fps < 10 || fps > 60) {
+            throw new IllegalArgumentException("fpsの設定は10～60の間で指定してください。");
+        }
+        this.fps = fps;
+        sleepAddTime = 1000.0 / fps;
+    }
 
     private void generatePanels() {
         int y = -50;
@@ -179,7 +179,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 panels.remove(i);
                 panelPasses++;
                 lastPanelCollectedTime = currentTime; // パネルを収集した時間を更新
-                soldier.setXMinMax(panel.getX(),panel.getX() + panel.getWidth());
+                soldier.setXMinMax(panel.getX(), panel.getX() + panel.getWidth());
                 break; // 1フレームで1つのパネルのみ収集
             } else {
                 soldier.resetXMinMax();
@@ -281,9 +281,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
         if (bossFight) {
             boss.draw(g);
-            soldier.draw(g);
         } else {
-            soldier.draw(g);
             for (Panel panel : panels) {
                 panel.draw(g);
             }
@@ -291,6 +289,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 obstacle.draw(g);
             }
         }
+
+        // 兵士の描画
+        soldier.draw(g);
 
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.PLAIN, 24));

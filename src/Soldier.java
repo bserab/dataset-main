@@ -5,7 +5,7 @@ public class Soldier {
     private int x, y;
     private Color color;
     int xMin = 0;
-    int xMax = GamePanel.WIDTH-20;
+    int xMax = GamePanel.WIDTH - 20;
 
     public Soldier(int x, int y, Color color) {
         this.x = x;
@@ -13,14 +13,14 @@ public class Soldier {
         this.color = color;
     }
 
-    public void setXMinMax(int min0,int max0){
+    public void setXMinMax(int min0, int max0) {
         xMin = min0;
-        xMax = max0-20;
+        xMax = max0 - 20;
     }
 
-    public void resetXMinMax(){
+    public void resetXMinMax() {
         xMin = 0;
-        xMax = GamePanel.WIDTH-20;
+        xMax = GamePanel.WIDTH - 20;
     }
 
     public void moveLeft() {
@@ -38,12 +38,27 @@ public class Soldier {
     public void moveTo(int newX) {
         if (newX > xMin && newX < xMax) { // 画面外に出ないように制限
             this.x = newX;
-        } 
+        }
     }
 
     public void draw(Graphics g) {
+        // 兵士の体
         g.setColor(color);
-        g.fillOval(x, y, 20, 20);
+        g.fillRect(x, y - 20, 20, 30);
+
+        // 兵士の頭
+        g.setColor(Color.BLACK);
+        g.fillRect(x + 5, y - 30, 10, 10);
+
+        // 兵士の足
+        g.setColor(Color.GRAY);
+        g.fillRect(x + 2, y + 10, 6, 10);
+        g.fillRect(x + 12, y + 10, 6, 10);
+
+        // 兵士の腕
+        g.setColor(Color.GRAY);
+        g.fillRect(x - 5, y - 15, 5, 20);
+        g.fillRect(x + 20, y - 15, 5, 20);
     }
 
     public int getX() {
