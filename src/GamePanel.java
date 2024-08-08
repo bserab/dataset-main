@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics; // FontMetrics クラスのインポートを追加
 import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, MouseMotionListener {
@@ -256,13 +257,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         setBackground(Color.WHITE); // 背景色を白に設定
+    
         if (startScreen) {
             g.setColor(Color.BLACK);
             g.setFont(new Font("Arial", Font.BOLD, 36));
             g.drawString("Press any key to Start", WIDTH / 2 - 150, HEIGHT / 2);
             return;
         }
-
+    
         if (gameOver) {
             g.setColor(Color.BLACK);
             g.setFont(new Font("Arial", Font.BOLD, 36));
@@ -271,7 +273,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             g.drawString("Press T to Return to Title", WIDTH / 2 - 130, HEIGHT / 2 + 50); // タイトルへ戻るメッセージ
             return;
         }
-
+    
         if (gameWon) {
             g.setColor(Color.BLACK);
             g.setFont(new Font("Arial", Font.BOLD, 36));
@@ -280,20 +282,24 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             g.drawString("Press any key to continue", WIDTH / 2 - 150, HEIGHT / 2 + 50);
             return;
         }
-
+    
+        // ボス戦が始まっているときの処理
         if (bossFight) {
             boss.draw(g);
-
-            // ボス画面での壁を描画
+    
+            // ボスのスコアを表示
             g.setColor(Color.BLACK);
+            g.setFont(new Font("Arial", Font.BOLD, 18));
+            FontMetrics fm = g.getFontMetrics();
+            String scoreText = "Boss Score: " + boss.getRequiredSoldiers();
+            int textWidth = fm.stringWidth(scoreText);
+            g.drawString(scoreText, boss.getX() + (boss.getWidth() - textWidth) / 2, boss.getY() - 50);
+    
+            // ボスの画面での壁を描画
             g.drawLine(boss.getX(), 0, boss.getX(), HEIGHT);
             g.drawLine(boss.getX() + boss.getWidth(), 0, boss.getX() + boss.getWidth(), HEIGHT);
-
-            // ボスのスコアを道の左側に表示
-            g.setFont(new Font("Arial", Font.BOLD, 18));
-            g.setColor(Color.BLACK);
-            g.drawString("Boss Score: " + boss.getRequiredSoldiers(), 10, 50);
         } else {
+            // パネルと障害物の描画
             for (Panel panel : panels) {
                 panel.draw(g);
             }
@@ -301,14 +307,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 obstacle.draw(g);
             }
         }
-
+    
         // 兵士の描画
         soldier.draw(g);
-
+    
+        // スコアの表示
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.PLAIN, 24));
         g.drawString("Score: " + score, 10, 25); // スコアのみ表示
     }
+    
 
     @Override
     public void keyPressed(KeyEvent e) {
