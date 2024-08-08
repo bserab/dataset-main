@@ -20,6 +20,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private static final long PANEL_COOLDOWN = 1000; // パネル取得後のクールダウンタイム（ミリ秒）
     private Thread thread;
     private boolean running;
+    private boolean first;
     private Soldier soldier;
     private List<Panel> panels;
     private List<Obstacle> obstacles;
@@ -34,6 +35,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private Random random;
     private long lastPanelCollectedTime; // 最後にパネルを取得した時間
 
+    private double sleepAddTime;
+    private int fps=60;
+
     public GamePanel() {
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         soldier = new Soldier(WIDTH / 4, HEIGHT - 50, Color.BLUE); // 左側から開始するように位置を変更
@@ -44,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         panelPasses = 0;
         bossFight = false;
         startScreen = true;
+        first = true;
         score = 1; // スコアの初期値を1に設定
         level = 1;
         random = new Random();
@@ -53,21 +58,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         addMouseListener(this);
         addMouseMotionListener(this);
         setFocusable(true);
+        setFps(fps);
     }
 
     private void startGame() {
+        System.out.println("START");
         running = true;
-        thread = new Thread(this);
-        thread.start();
+        if(first){
+            thread = new Thread(this);
+            thread.start();
+            first = false;
+        }
     }
 
     @Override
     public void run() {
+        double nextTime = System.currentTimeMillis() + sleepAddTime;
         while (running) {
             updateGame();
-            repaint();
+            //repaint();
             try {
-                Thread.sleep(16); // 約60FPS
+                long res = (long)nextTime - System.currentTimeMillis();
+                if ( res < 0 ) res = 0;
+				Thread.sleep(res);
+                //Thread.sleep(16); // 約60FPS
+                repaint();
+                nextTime += sleepAddTime;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -119,6 +135,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             boss = new Boss(0, -100, (int) (calculateMaxScore(score) * 0.2), Color.RED); // ボスの横幅を広げる
         }
     }
+
+    public void setFps(int fps){
+		if ( fps < 10 || fps > 60 ) {
+			throw new IllegalArgumentException("fpsの設定は10～60の間で指定してください。");
+		}
+		this.fps = fps;
+		sleepAddTime = 1000.0 / fps;
+	}
 
     private void generatePanels() {
         int y = -50;
