@@ -1,34 +1,21 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Obstacle {
-    private int x, y;
-    private static final int SIZE = 30;
+public class Obstacle extends GameObject {
     private static final int FALL_SPEED = 3;
 
     public Obstacle(int x, int y) {
-        this.x = x;
-        this.y = y;
+        super(x, y, 30, 30, Color.DARK_GRAY);
     }
 
+    @Override
     public void update() {
         y += FALL_SPEED;
     }
 
+    @Override
     public void draw(Graphics g) {
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(x, y, SIZE, SIZE);
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getSize() {
-        return SIZE;
+        g.setColor(color);
+        g.fillRect(x, y, width, height);
     }
 }

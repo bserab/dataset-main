@@ -1,16 +1,12 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Soldier {
-    private int x, y;
-    private Color color;
+public class Soldier extends GameObject {
     int xMin = 0;
     int xMax = GamePanel.WIDTH - 20;
 
     public Soldier(int x, int y, Color color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
+        super(x, y, 20, 30, color);
     }
 
     public void setXMinMax(int min0, int max0) {
@@ -41,10 +37,16 @@ public class Soldier {
         }
     }
 
+    @Override
+    public void update() {
+        // Soldierの更新処理（必要なら追加）
+    }
+
+    @Override
     public void draw(Graphics g) {
         // 兵士の体
         g.setColor(color);
-        g.fillRect(x, y - 20, 20, 30);
+        g.fillRect(x, y - 20, width, height);
 
         // 兵士の頭
         g.setColor(Color.BLACK);
@@ -59,17 +61,5 @@ public class Soldier {
         g.setColor(Color.GRAY);
         g.fillRect(x - 5, y - 15, 5, 20);
         g.fillRect(x + 20, y - 15, 5, 20);
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 }

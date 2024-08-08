@@ -132,7 +132,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             bossFight = true;
             panels.clear();
             obstacles.clear();
-            boss = new Boss(0, -100, (int) (calculateMaxScore(score) * 0.2), Color.RED); // ボスの横幅を広げる
+            boss = new Boss((WIDTH - 40) / 2, -100, (int) (calculateMaxScore(score) * 0.2), Color.RED); // ボスの位置を中央に設定
+            soldier.setX((WIDTH - 20) / 2); // プレイヤーを道の内側に強制移動
+            soldier.setXMinMax(boss.getX(), boss.getX() + boss.getWidth());
         }
     }
 
@@ -188,9 +190,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
         for (int i = 0; i < obstacles.size(); i++) {
             Obstacle obstacle = obstacles.get(i);
-            if (soldier.getX() < obstacle.getX() + obstacle.getSize() &&
+            if (soldier.getX() < obstacle.getX() + obstacle.getWidth() &&
                 soldier.getX() + soldierSize > obstacle.getX() &&
-                soldier.getY() < obstacle.getY() + obstacle.getSize() &&
+                soldier.getY() < obstacle.getY() + obstacle.getHeight() &&
                 soldier.getY() + soldierSize > obstacle.getY()) {
                 gameOver = true;
                 System.out.println("Hit an obstacle!");
@@ -281,6 +283,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
         if (bossFight) {
             boss.draw(g);
+
+            // ボス画面での壁を描画
+            g.setColor(Color.BLACK);
+            g.drawLine(boss.getX(), 0, boss.getX(), HEIGHT);
+            g.drawLine(boss.getX() + boss.getWidth(), 0, boss.getX() + boss.getWidth(), HEIGHT);
+
+            // ボスのスコアを道の左側に表示
+            g.setFont(new Font("Arial", Font.BOLD, 18));
+            g.setColor(Color.BLACK);
+            g.drawString("Boss Score: " + boss.getRequiredSoldiers(), 10, 50);
         } else {
             for (Panel panel : panels) {
                 panel.draw(g);
@@ -302,11 +314,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_A) {
-            if (soldier.getX() > 0) {
+            if (soldier.getX() > 0 && (!bossFight || soldier.getX() > boss.getX())) {
                 soldier.moveLeft();
             }
         } else if (key == KeyEvent.VK_D) {
-            if (soldier.getX() < WIDTH - 20) {
+            if (soldier.getX() < WIDTH - 20 && (!bossFight || soldier.getX() < boss.getX() + boss.getWidth() - 20)) {
                 soldier.moveRight();
             }
         } else if (key == KeyEvent.VK_T && gameOver) {

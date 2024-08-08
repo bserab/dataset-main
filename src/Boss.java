@@ -1,47 +1,39 @@
 import java.awt.Color;
-import java.awt.Font; // Fontをインポート
+import java.awt.Font;
 import java.awt.Graphics;
 
-public class Boss {
-    private int x, y;
+public class Boss extends GameObject {
     private int requiredSoldiers;
-    private Color color;
-    private static final int WIDTH = 800; // ボスの横幅を広げる
-    private static final int HEIGHT = 50;
 
     public Boss(int x, int y, int requiredSoldiers, Color color) {
-        this.x = x;
-        this.y = y;
+        super(x, y, 40, 60, color); // サイズをキャラクターと同じ形式に変更
         this.requiredSoldiers = requiredSoldiers;
-        this.color = color;
     }
 
+    @Override
     public void update() {
         y += 2; // ボスの降下速度
     }
 
+    @Override
     public void draw(Graphics g) {
+        // ボスの体
         g.setColor(color);
-        g.fillRect(x, y, WIDTH, HEIGHT);
+        g.fillRect(x, y - 20, width, height);
+
+        // ボスの頭
         g.setColor(Color.BLACK);
-        g.setFont(new Font("Arial", Font.PLAIN, 18));
-        g.drawString("Boss Score: " + requiredSoldiers, x + WIDTH / 2 - 50, y + HEIGHT / 2 + 5); // ボスのスコアを中央に表示
-    }
+        g.fillRect(x + 10, y - 30, 20, 20);
 
-    public int getX() {
-        return x;
-    }
+        // ボスの足
+        g.setColor(Color.GRAY);
+        g.fillRect(x + 5, y + 40, 10, 20);
+        g.fillRect(x + 25, y + 40, 10, 20);
 
-    public int getY() {
-        return y;
-    }
-
-    public int getWidth() {
-        return WIDTH;
-    }
-
-    public int getHeight() {
-        return HEIGHT;
+        // ボスの腕
+        g.setColor(Color.GRAY);
+        g.fillRect(x - 10, y - 10, 10, 30);
+        g.fillRect(x + 40, y - 10, 10, 30);
     }
 
     public int getRequiredSoldiers() {
