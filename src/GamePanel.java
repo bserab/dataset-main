@@ -97,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         }
 
         if (bossFight) {
-            boss.update();
+            boss.update(PANEL_FALL_SPEED);
             if (boss.getY() >= soldier.getY()) {
                 if (score >= boss.getRequiredSoldiers()) {
                     gameWon = true;
@@ -114,7 +114,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         }
 
         for (Panel panel : panels) {
-            panel.update();
+            panel.update(PANEL_FALL_SPEED);
         }
 
         for (Obstacle obstacle : obstacles) {

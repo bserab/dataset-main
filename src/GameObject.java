@@ -14,7 +14,7 @@ public abstract class GameObject {
         this.color = color;
     }
 
-    public abstract void update();
+    public abstract void update(int fall_speed);
 
     public abstract void draw(Graphics g);
 

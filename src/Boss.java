@@ -12,8 +12,8 @@ public class Boss extends GameObject {
     }
 
     @Override
-    public void update() {
-        y += 2; // ボスの降下速度
+    public void update(int fall_speed) {
+        y += fall_speed; // ボスの降下速度
     }
 
     @Override

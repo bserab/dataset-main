@@ -10,8 +10,8 @@ public class Panel extends GameObject {
     }
 
     @Override
-    public void update() {
-        y += 2; // パネルの降下速度を固定
+    public void update(int fall_speed) {
+        y += fall_speed; // パネルの降下速度を固定
     }
 
     @Override
