@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         score = 1; // スコアの初期値を1に設定
         random = new Random();
         lastPanelCollectedTime = 0; // 初期値
-        initializeGameObjects();
+        generatePanels();
         addKeyListener(this);
         addMouseListener(this);
         addMouseMotionListener(this);
@@ -102,7 +102,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                     bossFight = false;
                     panelPasses = 0;
                     soldier.setY(HEIGHT - 50);
-                    initializeGameObjects();
+                    generatePanels();
                 } else {
                     gameOver = true;
                     System.out.println("You lose!");
@@ -209,7 +209,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 bossFight = false;
                 panelPasses = 0;
                 soldier.setY(HEIGHT - 50);
-                initializeGameObjects();
+                generatePanels();
             } else {
                 gameOver = true;
                 System.out.println("You lose!");
@@ -232,10 +232,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         if (score < 1) {
             score = 1; // スコアが1未満にならないようにする
         }
-    }
-
-    private void initializeGameObjects() {
-        generatePanels();
     }
 
     private int calculateMaxScore(int currentScore) {
@@ -396,7 +392,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         bossFight = false;
         score = 1; // スコアの初期値を1にリセット
         lastPanelCollectedTime = 0; // クールダウンタイムをリセット
-        initializeGameObjects();
+        generatePanels();
         startGame();
     }
 }
