@@ -18,6 +18,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     static final int HEIGHT = 600;
     private static final int PANEL_PASS_COUNT = 5; // パネル通過のカウントをここで定義
     private static final int PANEL_FALL_SPEED = 2; // パネルの降下速度
+    private static final int OBSTACLE_FALL_SPEED = 3; //障害物の効果速度
     private static final long PANEL_COOLDOWN = 1000; // パネル取得後のクールダウンタイム（ミリ秒）
     private Thread thread;
     private boolean running;
@@ -116,7 +117,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         }
 
         for (Obstacle obstacle : obstacles) {
-            obstacle.update();
+            obstacle.update(OBSTACLE_FALL_SPEED);
         }
 
         if (panels.isEmpty() || panels.get(panels.size() - 1).getY() > HEIGHT / 2) {
