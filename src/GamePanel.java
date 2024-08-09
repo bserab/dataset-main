@@ -242,11 +242,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         return max;
     }
 
-    private void resetToStartScreen() {
-        startScreen = true;
-        running = false;
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
