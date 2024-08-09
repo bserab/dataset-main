@@ -32,7 +32,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private boolean bossFight;
     private boolean startScreen;
     private int score;
-    private int level;
     private Random random;
     private long lastPanelCollectedTime; // 最後にパネルを取得した時間
 
@@ -51,7 +50,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         startScreen = true;
         first = true;
         score = 1; // スコアの初期値を1に設定
-        level = 1;
         random = new Random();
         lastPanelCollectedTime = 0; // 初期値
         initializeGameObjects();
@@ -397,7 +395,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         panelPasses = 0;
         bossFight = false;
         score = 1; // スコアの初期値を1にリセット
-        level = 1;
         lastPanelCollectedTime = 0; // クールダウンタイムをリセット
         initializeGameObjects();
         startGame();

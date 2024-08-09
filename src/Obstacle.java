@@ -9,6 +9,9 @@ public class Obstacle extends GameObject {
     }
 
     @Override
+    public void update(int fall_speed) {
+    }
+
     public void update() {
         y += FALL_SPEED;
     }
